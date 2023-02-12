@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-scroll';  
 import { TbSearch } from 'react-icons/tb'
 import { CgShoppingCart } from 'react-icons/cg'
-import { AiOutlineHeart } from 'react-icons/ai'
+// import { AiOutlineHeart } from 'react-icons/ai'
 import Search from './Search/Search'
 import Cart from '../Cart/Cart'
 // import { Context } from "../../utils/context";
@@ -50,6 +50,9 @@ const Header = () => {
                         <Link spy={true} to='products' smooth={true}>
                             <li >Products</li>
                         </Link>
+                        <li onClick={() => navigate('Loginuser')}>
+                            Add Products
+                        </li>
                     </ul>
 
                     <div className="center"
@@ -58,9 +61,13 @@ const Header = () => {
                         <TbSearch
                             onClick={() => setShowSearch(true)} />
 
-                        <Link spy={true} to='products' smooth={true}>
+                        {/* <Link spy={true} to='products' smooth={true}>
                             <AiOutlineHeart />
-                        </Link>
+                        </Link> */}
+
+                        <span className="admin" onClick={() => navigate('Loginadmin')}>
+                            Admin
+                        </span>
 
                         <span className="cart-icon"
                             onClick={() => setShowCart(true)} >

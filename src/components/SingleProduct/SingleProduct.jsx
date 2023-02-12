@@ -1,22 +1,24 @@
 import "./SingleProduct.scss";
 import RelatedProducts from "./RelatedProducts/RelatedProducts";
-import { useState, useContext } from "react";
+import { useState, 
+    // useContext
+ } from "react";
 import {
     FaFacebookF, FaTwitter, FaInstagram,
     FaLinkedinIn, FaPinterest, FaCartPlus,
 } from "react-icons/fa";
 import prod from '../../images/products/earbuds-prod-1.webp'
-import useFetch from "../../hooks/useFetch";
-import { useParams } from 'react-router-dom'
-import { Context } from "../../utils/context";
+// import useFetch from "../../hooks/useFetch";
+// import { useParams } from 'react-router-dom'
+// import { Context } from "../../utils/context";
 
 
 const SingleProduct = () => {
 
     const [quantity, setQuantity] = useState(1)
-    const { id } = useParams();
-    const { data } = useFetch(`/api/products?populate=*&[filters][id]=${id}`);
-    const { handleAddToCart } = useContext(Context)
+    // const { id } = useParams();
+    // const { data } = useFetch(`/api/products?populate=*&[filters][id]=${id}`);
+    // const { handleAddToCart } = useContext(Context)
     const increment = () => {
         setQuantity((prevState) => prevState + 1)
     }
@@ -26,8 +28,8 @@ const SingleProduct = () => {
             return prevState - 1
         })
     }
-    if (!data) return;
-    const product = data?.data?.[0]?.attributes;
+    // if (!data) return;
+    // const product = data?.data?.[0]?.attributes;
 
     return (
     <div className="single-product-main-content">
@@ -42,9 +44,15 @@ const SingleProduct = () => {
 
                 </div>
                 <div className="right">
-                    <span className="name">{product.title}</span>
-                    <span className="price">&#8360;&nbsp;{product.price}</span>
-                    <span className="desc">{product.desc}</span>
+                    <span className="name">
+                        {/* {product.title} */}
+                        </span>
+                    <span className="price">&#8360;&nbsp;
+                    {/* {product.price} */}
+                    </span>
+                    <span className="desc">
+                        {/* {product.desc} */}
+                        </span>
                     <div className="cart-buttons">
                         <div className="quantity-buttons">
                             <span onClick={decrement}>-</span>
@@ -52,10 +60,11 @@ const SingleProduct = () => {
                             <span onClick={increment}>+</span>
                         </div>
                         <button className="add-to-cart-button"
-                            onClick={() => {
-                                handleAddToCart(data.data[0], quantity)
-                                setQuantity(1)
-                            }}>
+                            // onClick={() => {
+                            //     handleAddToCart(data.data[0], quantity)
+                            //     setQuantity(1)
+                            // }}
+                            >
                             <FaCartPlus size={20} />
                             ADD TO CART
                         </button>
@@ -65,8 +74,8 @@ const SingleProduct = () => {
                             <span className="text-bold">
                                 Category : &nbsp;
                                 <span >{
-                                    product.categories.data[0]
-                                    .attributes.title
+                                    // product.categories.data[0]
+                                    // .attributes.title
                                 }</span>
                             </span>
                             <span className="text-bold">
