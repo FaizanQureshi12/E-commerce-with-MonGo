@@ -7,11 +7,14 @@ import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
-
+  
   // necessary for server-side rendering
   // because mode is undefined on the server
   React.useEffect(() => {
@@ -34,6 +37,33 @@ function ModeToggle() {
 }
 
 export default function App() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const history = useNavigate()
+
+  async function submit(e) {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:3000/", {
+        email, password
+      })
+        .then(res => {
+          if (res.data == "exist") {
+            history('/Addproduct', { state: { id: email }})
+          }
+          else if (res.data == "Not exist") {
+            alert('User does not have account')
+          }
+        })
+        .catch(e => {
+          alert("wrong details")
+          console.log(e)
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  }
   return (
     <CssVarsProvider>
       <main>
@@ -66,6 +96,7 @@ export default function App() {
               name="email"
               type="email"
               placeholder="johndoe@email.com"
+              onChange={(e) => { setEmail(e.target.value) }}
             />
           </FormControl>
           <FormControl>
@@ -75,10 +106,13 @@ export default function App() {
               name="password"
               type="password"
               placeholder="password"
+              onChange={(e) => { setPassword(e.target.value) }}
+
             />
           </FormControl>
 
-          <Button sx={{ mt: 1 /* margin top */ }}>Log in</Button>
+          <Button sx={{ mt: 1 /* margin top */ }}
+            onClick={submit}>Log in</Button>
           <Typography
             endDecorator={<Link href="/Signup">Sign up</Link>}
             fontSize="sm"

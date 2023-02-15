@@ -11,9 +11,13 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import axios from 'axios'
+import { useState } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom'
 
 function Copyright(props) {
+
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -37,6 +41,32 @@ export default function SignUp() {
       password: data.get('password'),
     });
   };
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const history = useNavigate()
+
+  async function submit(e) {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:3000/Signup", {
+        email, password
+      })
+        .then(res => {
+          if (res.data == "exist") {
+            alert('User already exists')
+          }
+          else if (res.data == "Not exist") {
+            history('/Addproduct', { state: { id: email } })
+          }
+        })
+        .catch(e => {
+          alert("wrong details")
+          console.log(e)
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -87,6 +117,8 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={(e) => { setEmail(e.target.value) }}
+
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,6 +130,7 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(e) => { setPassword(e.target.value) }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -112,12 +145,13 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-            >
+              onClick={submit}
+            > 
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/Loginuser" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

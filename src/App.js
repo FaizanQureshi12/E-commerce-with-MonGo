@@ -8,6 +8,7 @@ import Newsletter from './components/Footer/Newsletter/Newsletter'
 import Loginuser from './components/Loginuser/Loginuser'
 import Signup from './components/Loginuser/Signup'
 import Loginadmin from './components/Loginadmin/Loginadmin'
+import Addproduct from "./components/Loginuser/Addproduct/Addproduct";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path='/Signup' element={<Signup />} />
                 <Route path='/Loginadmin' element={<Loginadmin />} />
             </Routes>
+            <Addproduct/>
             <Newsletter />
             <Footer />
         </BrowserRouter>
