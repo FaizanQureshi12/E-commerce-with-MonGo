@@ -41,6 +41,9 @@ export default function SignUp() {
       password: data.get('password'),
     });
   };
+
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const history = useNavigate()
@@ -48,19 +51,21 @@ export default function SignUp() {
   async function submit(e) {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/Signup", {
+      await axios.post("http://localhost:3040/Signup", {
+        firstName, lastName,
         email, password
       })
         .then(res => {
           if (res.data == "exist") {
             alert('User already exists')
           }
-          else if (res.data == "Not exist") {
+          else if (res.data == "Notexist") {
             history('/Addproduct', { state: { id: email } })
+            console.log("SignUp Success")
           }
         })
         .catch(e => {
-          alert("wrong details")
+          alert("Please fill correctly")
           console.log(e)
         })
     } catch (e) {
@@ -97,6 +102,7 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={(e) => { setFirstName(e.target.value) }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -107,6 +113,7 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={(e) => { setLastName(e.target.value) }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -114,6 +121,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
+                  type="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
@@ -146,7 +154,7 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={submit}
-            > 
+            >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">

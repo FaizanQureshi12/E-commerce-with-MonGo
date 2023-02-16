@@ -14,7 +14,7 @@ import { useState } from 'react'
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
-  
+
   // necessary for server-side rendering
   // because mode is undefined on the server
   React.useEffect(() => {
@@ -45,15 +45,16 @@ export default function App() {
   async function submit(e) {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/", {
+      await axios.post("http://localhost:3040/Loginuser", {
         email, password
       })
         .then(res => {
           if (res.data == "exist") {
-            history('/Addproduct', { state: { id: email }})
+            history('/Addproduct', { state: { id: email } })
+            console.log("Successfully login")
           }
-          else if (res.data == "Not exist") {
-            alert('User does not have account')
+          else if (res.data == "Notexist") {
+            alert('User does not have account\n Create an Account')
           }
         })
         .catch(e => {

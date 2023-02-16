@@ -3,21 +3,22 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
-// app.use(express.urlencoded({ extended: true }))
 
 
 const app = express()
-// const users = require("./mongo")
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://localhost:3000', "*"],
+    credentials: true
+}));
 
-let productSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    price: Number,
-    description: String,
-    createdOn: { type: Date, default: Date.now }
-});
-export const productModel = mongoose.model('products', productSchema);
+// let productSchema = new mongoose.Schema({
+//     name: { type: String, required: true },
+//     price: Number,
+//     description: String,
+//     createdOn: { type: Date, default: Date.now }
+// });
+// export const productModel = mongoose.model('products', productSchema);
 
 const userSchema = new mongoose.Schema({
     firstName: { type: String },
@@ -27,6 +28,51 @@ const userSchema = new mongoose.Schema({
     createdOn: { type: Date, default: Date.now },
 });
 export const userModel = mongoose.model('users', userSchema);
+
+app.get("/Loginuser", cors(), (req, res) => {
+
+})
+
+app.post("/Loginuser", async (req, res) => {
+    const { email, password } = req.body
+    try {
+        const check = await userModel.findOne({ email: email })
+        if (check) {
+            res.json('exist')
+        } else {
+            res.json('Notexist')
+        }
+    }
+    catch (e) {
+        res.json('Notexist')
+    }
+})   
+
+app.post("/Signup", async (req, res) => {
+    const { firstname,lastname, email,  } = req.body
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const data = {
+        firstname: firstname,     
+        lastname: lastname,     
+        email: email,
+        password: hashedPassword,
+    }
+    try {
+        const check = await userModel.findOne({ email: email })
+        if (check) {
+            res.json('exist')  
+        } else {
+            res.json('Notexist')
+            await userModel.create([data])
+        }
+    }   
+    catch (e) {
+        res.json('Notexist')
+    }
+})
+ 
+app.use(bodyParser.json())
+app.listen('3040', () => console.log("listening on port 3040"))
 
 const mongodbURI = process.env.mongodbURI || "mongodb+srv://faizan:asfan@cluster0.9ya8dik.mongodb.net/E-commerce?retryWrites=true&w=majority";
 ///////////////////////////////////////////////////////////////////////
@@ -52,87 +98,3 @@ process.on('SIGINT', function () {/////this function will run jst before app is 
     });
 });
 ////////////////mongodb connected disconnected events////////////////////////
-// const users = []
-
-// app.get('/users', (req, res) => {
-//     res.json(users)
-// })
-
-// app.post('/users', async (req, res) => {
-//     try {
-//         const hashedPassword = await bcrypt.hash(req.body.password, 10)
-//         // console.log(hashedPassword)
-//         const user = {
-//             name: req.body.name,
-//             password: hashedPassword
-//         }
-//         users.push(user)
-//         res.status(201).send()
-//         // hash( salt +'password') kjhjv
-//     } catch (error) {
-//         res.status(500).send()
-//     }
-
-// })
-
-// app.post('/users/login', async (req, res) => {
-//     const user = users.find(user => user.name = req.body.name)
-//     if (user == null) {
-//         return res.status(400).send('Cannot find user')
-//     }
-//     try {
-//         if (await bcrypt.compare(req.body.password, user.password)) {
-//             res.send('Success')
-//         } else {
-//             res.send('Not Allowed')
-//         }
-//     } catch (error) {
-//         res.status(500).send()
-
-//     }
-// })
-
-
-app.get("/loginuser", cors(), (req, res) => {
-
-})
-
-app.post("/loginuser", async (req, res) => {
-    const { email, password } = req.body
-    try {
-        const check = await users.findOne({ email: email })
-        if (check) {
-            res.json('exist')
-        } else {
-            res.json('Notexist')
-
-        }
-    }
-    catch (e) {
-        res.json('Notexist')
-    }
-})
-
-app.post("/signup", async (req, res) => {
-    const { email, password } = req.body
-    const data = {
-        email: email,
-        password: password
-    }
-    try {
-        const check = await users.findOne({ email: email })
-        if (check) {
-            res.json('exist')
-        } else {
-            res.json('Notexist')
-            await users.insertMany([data])
-        }
-    }
-    catch (e) {
-        res.json('Notexist')
-    }
-})
-
-
-app.use(bodyParser.json())
-app.listen('3040', () => console.log("listening on port 3040"))
