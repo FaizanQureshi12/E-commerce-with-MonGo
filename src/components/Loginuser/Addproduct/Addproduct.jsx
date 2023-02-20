@@ -11,6 +11,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { BsCamera } from 'react-icons/bs';
 import { TextField } from '@mui/material';
+import Card from './card'
+import axios from 'axios'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -53,11 +55,21 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 
 export default function CustomizedDialogs() {
   const [open, setOpen] = React.useState(false);
+  const [product, setProduct] = React.useState("")
+  const [price, setPrice] = React.useState(0)
+  const [description, setDescription] = React.useState("")
 
   const handleClickOpen = () => {
-    setOpen(true);
+       setOpen(true);
   };
+  
   const handleClose = () => {
+    axios.post('http://localhost:3040/Addproduct',{
+      product: product,
+      price: price,
+      description: description
+    })
+    console.log(product,price,description)
     setOpen(false);
   };
 
@@ -85,9 +97,19 @@ export default function CustomizedDialogs() {
             <label htmlFor="photo" >
               <BsCamera size={200} className='camera' />
             </label>
-            <input type="text" size={31} maxLength={40} name="" placeholder='Product Title' className='inp' />
-            <TextField placeholder='Description' />
-            <input type="number" name="" placeholder='Price' className='inp' id="" />
+            <input type="text" size={31} maxLength={40}
+              name="product name" required
+              placeholder='Product Title' className='inp'
+              onChange={(e) => { setProduct(e.target.value) }}
+            />
+            <TextField placeholder='Description'
+              onChange={(e) => { setDescription(e.target.value) }}
+            />
+            <input type="number"
+              name="number" required
+              placeholder='Price' className='inp'
+              onChange={(e) => { setPrice(e.target.value) }}
+            />
           </Typography>
 
         </DialogContent>
@@ -97,6 +119,11 @@ export default function CustomizedDialogs() {
           </Button>
         </DialogActions>
       </BootstrapDialog>
+      <br />
+      {/* Product card */}
+      <Card />
+      <br />
     </div>
   );
 }
+
