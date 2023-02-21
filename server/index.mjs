@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import env from 'dotenv'
 import bcrypt from 'bcrypt'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
@@ -7,6 +8,9 @@ import mongoose from 'mongoose'
 // import productApis from './Apis/product.mjs'
 
 const app = express()
+env.config()
+
+
 app.use(express.json())
 app.use(cors({
     origin: ['http://localhost:3000', 'https://localhost:3000', "*"],
@@ -15,8 +19,10 @@ app.use(cors({
 
 let productSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    price: { type: Number },
+    price: Number,
     description: String,
+    // price: { type: Number },
+    // description: {type: String},
     createdOn: { type: Date, default: Date.now }
 });
 export const productModel = mongoose.model('products', productSchema);
@@ -77,12 +83,12 @@ app.post("/Signup", async (req, res) => {
 // app.use('/api/v1',productApis)
 
 app.post("/Addproduct", async (req, res) => {
-    // const product = req.body.name  
-    const price = req.body.price
-    const description = req.body.description
-    const product = new productModel({      
-        name: product,  
-        price: price,  
+    const productTitle = req.body.name;
+    const price = req.body.price;
+    const description = req.body.description;
+    const product = new productModel({
+        name: productTitle,
+        price: price,
         description: description,
     });
     try {
@@ -96,7 +102,7 @@ app.post("/Addproduct", async (req, res) => {
 app.use(bodyParser.json())
 app.listen('3040', () => console.log("listening on port 3040"))
 
-const mongodbURI = process.env.mongodbURI || "mongodb+srv://faizan:asfan@cluster0.9ya8dik.mongodb.net/E-commerce?retryWrites=true&w=majority";
+const mongodbURI = process.env.REACT_APP_MONGO_URL;
 ///////////////////////////////////////////////////////////////////////
 mongoose.connect(mongodbURI);
 

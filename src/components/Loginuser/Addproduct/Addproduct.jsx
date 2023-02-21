@@ -14,6 +14,7 @@ import { TextField } from '@mui/material';
 import Card from './card'
 import axios from 'axios'
 
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -55,21 +56,21 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 
 export default function CustomizedDialogs() {
   const [open, setOpen] = React.useState(false);
-  const [product, setProduct] = React.useState("")
+  const [productTitle, setProductTitle] = React.useState("")
   const [price, setPrice] = React.useState(0)
   const [description, setDescription] = React.useState("")
 
   const handleClickOpen = () => {
-       setOpen(true);
+    setOpen(true);
   };
-  
+
   const handleClose = () => {
-    axios.post('http://localhost:3040/Addproduct',{
-      product: product,
+    axios.post('http://localhost:3040/Addproduct', {
+      productTitle: productTitle,
       price: price,
       description: description
-    })
-    console.log(product,price,description)
+    });
+    // console.log(productTitle,price,description)
     setOpen(false);
   };
 
@@ -100,11 +101,32 @@ export default function CustomizedDialogs() {
             <input type="text" size={31} maxLength={40}
               name="product name" required
               placeholder='Product Title' className='inp'
-              onChange={(e) => { setProduct(e.target.value) }}
+              onChange={(e) => { setProductTitle(e.target.value) }}
             />
+            <br />
+
+            <select >
+              <option selected disabled >
+                SELECT CATEGORY
+              </option>
+              <option value="Headphones">
+                Headphones
+              </option>
+              <option value="Smart Watches">
+                Smart Watches
+              </option>
+              <option value="Bluetooth Speakers">
+                Bluetooth Speakers
+              </option>
+              <option value="Wireless Earbuds">
+                Wireless Earbuds
+              </option>
+            </select>
+            <br />
             <TextField placeholder='Description'
               onChange={(e) => { setDescription(e.target.value) }}
             />
+            <br />
             <input type="number"
               name="number" required
               placeholder='Price' className='inp'

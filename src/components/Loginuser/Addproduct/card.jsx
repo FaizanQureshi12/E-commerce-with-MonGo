@@ -13,7 +13,10 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import headphone from '../../../images/products/headphone-prod-1.webp'
+
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -24,7 +27,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
+  marginLeft: 'auto', //Left : auto
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest,
   }),
@@ -37,8 +40,8 @@ export default function RecipeReviewCard() {
     setExpanded(!expanded);
   };
 
-  return (
-    <Card sx={{ maxWidth: 345 }}>
+  return ( //345
+    <Card sx={{ maxWidth: 300 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -47,22 +50,30 @@ export default function RecipeReviewCard() {
         }
         action={
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <Select>
+              <Button>Edit</Button>
+              <br />
+              <Button>Delete</Button>
+            </Select>
           </IconButton>
         }
         title="Shrimp and Chorizo Paella"
         subheader="September 14, 2016"
       />
-      <CardMedia
+      {/* <CardMedia
         component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
+        height="164"  //194
+        image="/images/products/earbuds-prod-1.webp" //  /static/images/cards/paella.jpg
         alt="Paella dish"
-      />
+      /> */}
+      <CardMedia >
+        <img src={headphone}
+          height="164"
+          alt="" />
+      </CardMedia>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           This impressive paella is a perfect party dish and a fun meal to cook
-          
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -88,7 +99,6 @@ export default function RecipeReviewCard() {
             Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
             aside for 10 minutes.
           </Typography>
-          
         </CardContent>
       </Collapse>
     </Card>
