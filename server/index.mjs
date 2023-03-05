@@ -10,7 +10,6 @@ import mongoose from 'mongoose'
 const app = express()
 env.config()
 
-
 app.use(express.json())
 app.use(cors({
     origin: ['http://localhost:3000', 'https://localhost:3000', "*"],
@@ -18,11 +17,12 @@ app.use(cors({
 }));
 
 let productSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    price: Number,
-    description: String,
-    // price: { type: Number },
-    // description: {type: String},
+    productTitle: { type: String },
+    // ,required: true },
+    category: { type: String },
+    //, required: true },
+    price: { type: Number },
+    description: { type: String },
     createdOn: { type: Date, default: Date.now }
 });
 export const productModel = mongoose.model('products', productSchema);
@@ -83,13 +83,13 @@ app.post("/Signup", async (req, res) => {
 // app.use('/api/v1',productApis)
 
 app.post("/Addproduct", async (req, res) => {
-    const productTitle = req.body.name;
+    const productTitle = req.body.productTitle;
+    const category = req.body.category;
     const price = req.body.price;
     const description = req.body.description;
     const product = new productModel({
-        name: productTitle,
-        price: price,
-        description: description,
+        productTitle, category,
+        price, description
     });
     try {
         await product.save()
@@ -97,6 +97,37 @@ app.post("/Addproduct", async (req, res) => {
     } catch (error) {
         console.log(error)
     }
+})
+
+app.get("/read", async (req, res) => {
+    productModel.find({},
+        (err, result) => {
+            if (err) {
+                res.send(err)
+            }
+            res.send(result)
+        }
+    )
+})
+
+app.put("/update", async (req, res) => {
+    const newProductTitle = req.body.newProductTitle;
+    const id = req.body.id;
+    try {
+        await productModel.findById(id, (err, updatedProduct) => {
+            updatedProduct.productTitle = newProductTitle
+            updatedProduct.save()
+            res.send('update')
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+app.delete('/delete/:id', async (req, res) => {
+    const id = req.params.id
+    await productModel.findByIdAndRemove(id).exec()
+    res.send('deleted')
 })
 
 app.use(bodyParser.json())

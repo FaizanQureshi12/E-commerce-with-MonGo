@@ -11,8 +11,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { BsCamera } from 'react-icons/bs';
 import { TextField } from '@mui/material';
-import Card from './card'
 import axios from 'axios'
+import Card from './card'
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -57,6 +57,7 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 export default function CustomizedDialogs() {
   const [open, setOpen] = React.useState(false);
   const [productTitle, setProductTitle] = React.useState("")
+  const [category, setCategory] = React.useState("")
   const [price, setPrice] = React.useState(0)
   const [description, setDescription] = React.useState("")
 
@@ -66,19 +67,19 @@ export default function CustomizedDialogs() {
 
   const handleClose = () => {
     axios.post('http://localhost:3040/Addproduct', {
-      productTitle: productTitle,
-      price: price,
-      description: description
+      productTitle, category,
+      price, description
     });
-    // console.log(productTitle,price,description)
+    console.log(productTitle, category, price, description)
     setOpen(false);
   };
 
   return (
+
     <div>
       <Button variant="outlined" className='productbtn' onClick={handleClickOpen}>
         Add Your Own Product
-      </Button> &nbsp;&nbsp;&nbsp;
+      </Button> &nbsp; &nbsp; &nbsp;
       <Button variant="contained" disableElevation>
         LOG OUT
       </Button>
@@ -105,7 +106,9 @@ export default function CustomizedDialogs() {
             />
             <br />
 
-            <select >
+            <select
+              onChange={(e) => { setCategory(e.target.value) }}
+            >
               <option selected disabled >
                 SELECT CATEGORY
               </option>
@@ -146,6 +149,7 @@ export default function CustomizedDialogs() {
       <Card />
       <br />
     </div>
+
   );
 }
 
