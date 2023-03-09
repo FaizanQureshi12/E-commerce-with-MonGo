@@ -134,8 +134,8 @@ app.delete('/delete/:id', async (req, res) => {
 })
 
 const __dirname = path.resolve();
-app.use('/', express.static(path.join(__dirname, '../build')))
-app.use('*', express.static(path.join(__dirname, '../build')))
+app.use('/', express.static(path.join(__dirname, '../Client/build')))
+app.use('*', express.static(path.join(__dirname, '../Client/build')))
 
 app.use(bodyParser.json())  
 app.listen('3040', () => console.log("listening on port 3040"))
