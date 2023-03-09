@@ -1,11 +1,14 @@
 import express from 'express'
 import cors from 'cors'
 import env from 'dotenv'
+import path from 'path'
 import bcrypt from 'bcrypt'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 // import authApis from './Apis/auth.mjs'  
 // import productApis from './Apis/product.mjs'
+
+const SECRET = process.env.SECRET || "topsecret";
 
 const app = express()
 env.config()
@@ -130,7 +133,11 @@ app.delete('/delete/:id', async (req, res) => {
     res.send('deleted')
 })
 
-app.use(bodyParser.json())
+const __dirname = path.resolve();
+app.use('/', express.static(path.join(__dirname, '../build')))
+app.use('*', express.static(path.join(__dirname, '../build')))
+
+app.use(bodyParser.json())  
 app.listen('3040', () => console.log("listening on port 3040"))
 
 const mongodbURI = process.env.REACT_APP_MONGO_URL;
