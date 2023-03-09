@@ -8,6 +8,8 @@ import mongoose from 'mongoose'
 // import authApis from './Apis/auth.mjs'  
 // import productApis from './Apis/product.mjs'
 
+    // "start": "nodemon index.mjs"
+
 const SECRET = process.env.SECRET || "topsecret";
 
 const app = express()
