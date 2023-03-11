@@ -56,10 +56,10 @@ export default function SignUp() {
         email, password
       })
         .then(res => {
-          if (res.data == "exist") {
+          if (res.data === "exist") {
             alert('User already exists')
           }
-          else if (res.data == "Notexist") {
+          else if (res.data === "Notexist") {
             history('/Addproduct', { state: { id: email } })
             console.log("SignUp Success")
           }

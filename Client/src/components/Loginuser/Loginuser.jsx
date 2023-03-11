@@ -49,11 +49,11 @@ export default function App() {
         email, password
       })
         .then(res => {
-          if (res.data == "exist") {
+          if (res.data === "exist") {
             history('/Addproduct', { state: { id: email } })
             console.log("Successfully login")
           }
-          else if (res.data == "Notexist") {
+          else if (res.data === "Notexist") {
             alert('User does not have account\n Create an Account')
           }
         })
