@@ -10,7 +10,7 @@ import mongoose from 'mongoose'
 
     // "start": "nodemon index.mjs"
 
-const SECRET = process.env.SECRET || "topsecret";
+// const SECRET = process.env.SECRET || "topsecret";
 
 const app = express()
 env.config()
@@ -142,18 +142,9 @@ app.use('*', express.static(path.join(__dirname, '../Client/build/index.html')))
 app.use(bodyParser.json())  
 app.listen('3040', () => console.log("listening on port 3040"))
 
-// mongoose.connect(process.env.REACT_APP_MONGO_URL, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// }).then(() => {
-//     console.log('MongoDB connected Successfully')
-// }).catch((err) => {
-//     console.log(err.message)
-// })
-
-// const mongodbURI = process.env.REACT_APP_MONGO_URL;
-const mongodbURI = process.env.mongodbURI || "mongodb+srv://faizan:asfan@cluster0.9ya8dik.mongodb.net/E-commerce?retryWrites=true&w=majority"
+const mongodbURI = process.env.REACT_APP_MONGO_URL;
 ///////////////////////////////////////////////////////////////////////
+mongoose.set('strictQuery', false)
 mongoose.connect(mongodbURI);
 
 // ////////////////mongodb connected disconnected events/////////////////
