@@ -143,7 +143,7 @@ app.use(bodyParser.json())
 app.listen('3040', () => console.log("listening on port 3040"))
 
 // const mongoose = require('mongoose');
-const uri = process.env.REACT_APP_MONGO_URL; // Replace with your MongoDB database URL
+const uri = "mongodb+srv://faizan:asfan@cluster0.9ya8dik.mongodb.net/E-commerce?retryWrites=true&w=majority"; // Replace with your MongoDB database URL
 mongoose.set('strictQuery', false)
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
