@@ -142,28 +142,40 @@ app.use('*', express.static(path.join(__dirname, '../Client/build/index.html')))
 app.use(bodyParser.json())  
 app.listen('3040', () => console.log("listening on port 3040"))
 
-const mongodbURI = process.env.REACT_APP_MONGO_URL;
-///////////////////////////////////////////////////////////////////////
+// const mongoose = require('mongoose');
+const uri = process.env.REACT_APP_MONGO_URL; // Replace with your MongoDB database URL
 mongoose.set('strictQuery', false)
-mongoose.connect(mongodbURI);
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('MongoDB connected successfully!');
+  })
+  .catch((err) => {
+    console.log('Error connecting to MongoDB: ' + err);
+  });  
 
-// ////////////////mongodb connected disconnected events/////////////////
-mongoose.connection.on('connected', function () {//connected
-    console.log("Mongoose is connected");
-});
-mongoose.connection.on('disconnected', function () {//disconnected
-    console.log("Mongoose is disconnected");
-    process.exit(1);
-});
-mongoose.connection.on('error', function (err) {//any error
-    console.log('Mongoose connection error: ', err);
-    process.exit(1);
-});
-process.on('SIGINT', function () {/////this function will run jst before app is closing
-    console.log("app is terminating");
-    mongoose.connection.close(function () {
-        console.log('Mongoose default connection closed');
-        process.exit(0);
-    });
-});
-////////////////mongodb connected disconnected events////////////////////////
+
+// const mongodbURI = process.env.REACT_APP_MONGO_URL;
+// ///////////////////////////////////////////////////////////////////////
+// mongoose.set('strictQuery', false)l
+// mongoose.connect(mongodbURI);
+
+// // ////////////////mongodb connected disconnected events/////////////////
+// mongoose.connection.on('connected', function () {//connected
+//     console.log("Mongoose is connected");
+// });
+// mongoose.connection.on('disconnected', function () {//disconnected
+//     console.log("Mongoose is disconnected");
+//     process.exit(1);
+// });
+// mongoose.connection.on('error', function (err) {//any error
+//     console.log('Mongoose connection error: ', err);
+//     process.exit(1);
+// });
+// process.on('SIGINT', function () {/////this function will run jst before app is closing
+//     console.log("app is terminating");
+//     mongoose.connection.close(function () {
+//         console.log('Mongoose default connection closed');
+//         process.exit(0);
+//     });
+// });
+// ////////////////mongodb connected disconnected events////////////////////////
